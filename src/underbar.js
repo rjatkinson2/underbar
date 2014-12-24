@@ -198,6 +198,9 @@
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+      var setIterator = (iterator) ? iterator : function(item){return item;};
+      var switchFunc = function(iter){if(iter){return false;}else{return true;}};
+      _.every(collection, switchFunc(setIterator));
   };
 
 
