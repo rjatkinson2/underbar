@@ -186,9 +186,9 @@
       return _.reduce(collection, function(isTrue, item){
         var truthy;
         if(iterator){
-          truthy = (iterator(item)) ? true : false;
+          truthy = iterator(item) ? true : false;
         }else{
-          truthy = (item) ? true : false;
+          truthy = item ? true : false;
         }
         return (isTrue) ? truthy : false;
       }, true);
@@ -199,8 +199,10 @@
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
       var setIterator = (iterator) ? iterator : function(item){return item;};
-      var switchFunc = function(iter){if(iter){return false;}else{return true;}};
-      _.every(collection, switchFunc(setIterator));
+      function switchFunc(iterator){
+          return function(item){if(iterator(item)){return false;}else{return true;}};
+      };
+      return (_.every(collection, switchFunc(setIterator))) ? false : true;
   };
 
 
