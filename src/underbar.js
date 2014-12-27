@@ -201,7 +201,7 @@
       var setIterator = (iterator) ? iterator : function(item){return item;};
       function switchFunc(iterator){
           return function(item){if(iterator(item)){return false;}else{return true;}};
-      };
+      }
       return (_.every(collection, switchFunc(setIterator))) ? false : true;
   };
 
@@ -236,6 +236,14 @@
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+      _.each(arguments,function(item, key){
+          _.each(item, function(item2, key2){
+              if(obj[key2]===undefined){
+                obj[key2] = item2;
+              }
+          });
+      });
+      return obj;
   };
 
 
@@ -279,6 +287,14 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+      var results = {};
+      return function(){
+          var result = arguments[0];
+          if(!results[result]){
+              results[result] = func.apply(this, arguments);
+          }
+          return results[result];
+      };
   };
 
   // Delays a function for the given number of milliseconds, and then calls
