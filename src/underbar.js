@@ -435,5 +435,18 @@
   // on this function.
   //
   // Note: This is difficult! It may take a while to implement.
-  _.throttle = function (func, wait) {};
+  _.throttle = function (func, wait) {
+    var alreadyCalled = false;
+    var result;
+    return function () {
+      if (!alreadyCalled) {
+        result = func.apply(this, arguments);
+        alreadyCalled = true;
+        window.setTimeout(function () {
+          alreadyCalled = false;
+        }, wait);
+        return result;
+      }
+    }
+  };
 }());
