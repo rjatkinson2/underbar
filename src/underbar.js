@@ -401,7 +401,16 @@
 
   // Takes an arbitrary number of arrays and produces an array that contains
   // every item shared between all the passed-in arrays.
-  _.intersection = function () {};
+  _.intersection = function () {
+    var shared = [];
+    _.each(arguments, function (item) {
+      shared = shared.concat(_.flatten(item));
+    });
+    shared.sort();
+    return _.filter(shared,function (item,index,collection) {
+      return (item===collection[index+1] && collection[index+1]!==collection[index + 2]);
+    });
+  };
 
   // Take the difference between one array and a number of other arrays.
   // Only the elements present in just the first array will remain.
