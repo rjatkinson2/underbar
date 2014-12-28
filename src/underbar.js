@@ -414,7 +414,21 @@
 
   // Take the difference between one array and a number of other arrays.
   // Only the elements present in just the first array will remain.
-  _.difference = function (array) {};
+  _.difference = function (array) {
+   var compArr = [];   
+   for(var i=1; i<arguments.length; i++){
+     compArr = compArr.concat(arguments[i]);
+   }
+    return _.filter(array,function(item){
+      var status = true;
+      _.each(compArr,function(argItem){
+        if(item===argItem){
+          status = false;
+        }
+      });
+      return status;
+    });
+  };
 
   // Returns a function, that, when invoked, will only be triggered at most once
   // during a given window of time.  See the Underbar readme for extra details
