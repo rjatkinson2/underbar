@@ -355,7 +355,15 @@
 
   // Calls the method named by functionOrKey on each value in the list.
   // Note: You will need to learn a bit about .apply to complete this.
-  _.invoke = function (collection, functionOrKey, args) {};
+  _.invoke = function (collection, functionOrKey, args) {
+    var proto = (typeof collection[Object.keys(collection)[0]]);
+    var meth = (proto==='string') ? String.prototype[functionOrKey] : ((proto==='number') ? Number.prototype[functionOrKey] : Boolean.prototype[functionOrKey]);
+    var func = ((typeof functionOrKey) === 'string') ? meth : functionOrKey;
+    _.each(collection, function(item,indexOrKey,collection){
+      collection[indexOrKey] = func.call(item);
+    });
+    return(collection);
+  };
 
   // Sort the object's values by a criterion produced by an iterator.
   // If iterator is a string, sort objects by that property with the name
