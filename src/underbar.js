@@ -453,17 +453,20 @@
   //
   // Note: This is difficult! It may take a while to implement.
   _.throttle = function (func, wait) {
-    var alreadyCalled = false;
+    var callCount = 0;
     var result;
     return function () {
-      if (!alreadyCalled) {
+      if (callCount===0) {
         result = func.apply(this, arguments);
-        alreadyCalled = true;
         window.setTimeout(function () {
-          alreadyCalled = false;
+          callCount--;
         }, wait);
+        callCount++;
         return result;
       }
+      window.setTimeout(function () {
+        return _.throttle.apply(this,arguments);
+      }, wait);
     }
   };
 }());
